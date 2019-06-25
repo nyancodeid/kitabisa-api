@@ -1,0 +1,7 @@
+node_modules/
+~/
+donations/*.png
+cookies/*.json
+libs/*.js
+app.js
+.env
