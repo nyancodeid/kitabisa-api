@@ -1,8 +1,8 @@
 {
   "name": "kitabisa-api",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.1.0",
+  "description": "KitaBisa.com Automation API",
+  "main": "app.ts",
   "jest": {
     "preset": "jest-puppeteer"
   },
@@ -10,9 +10,13 @@
     "test": "jest",
     "start": "node -r dotenv/config app.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["puppeteer", "typescript", "kitabisa.com", "kitabisa", "fundrasing"],
+  "author": "Ryan Aunur Rassyid",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nyancodeid/kitabisa-puppeteer.git"
+  },
   "dependencies": {
     "dotenv": "^8.0.0",
     "jsonfile": "^5.0.0",
