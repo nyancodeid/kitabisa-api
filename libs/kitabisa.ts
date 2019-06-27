@@ -1,4 +1,4 @@
-/// kitabis.ts 
+/// kitabisa.ts 
 /// <reference path="./kitabisa.d.ts" />
 
 import * as puppeteer from 'puppeteer'
@@ -81,10 +81,7 @@ export default class KitaBisa {
     await this.page.click('#login_btn_submit');
     await this.saveCookie()
 
-    await this.page.goto('https://www.kitabisa.com/dashboard/overview', { waitUntil: "networkidle2" })
-
-    // don't forget to clear page 
-    // for reduce memory
+    // don't forget to clear page for reduce memory
     this.clearPage()
   }
 
