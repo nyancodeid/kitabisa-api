@@ -89,6 +89,8 @@ export default class KitaBisa {
     signale.info("[KitaBisa] getting kitabisa account balance (Dompet Kebaikan)")
     await this.page.goto('https://www.kitabisa.com/dashboard/wallet', { waitUntil: "networkidle2" })
 
+    if (this.page.url().includes('login')) throw Error(`Unauthorized`)
+
     await this.page.waitForSelector('.box-wallet__amount');
     
     const element = await this.page.$('.box-wallet__amount');
@@ -160,6 +162,10 @@ export default class KitaBisa {
     })
   }
   async getUserStatistic() : Promise<KitaBisa.UserStat> {
+    await this.page.goto('https://www.kitabisa.com/dashboard/overview', { waitUntil: "networkidle2" })
+
+    if (this.page.url().includes('login')) throw Error(`Unauthorized`)
+
     const result = await this.page.evaluate(() => {
       const elements = document.querySelectorAll('span.o-box__count')
 
@@ -198,22 +204,31 @@ export default class KitaBisa {
     signale.info('[KitaBisa] campaign title is ' + title)
     signale.info('[KitaBisa] is page url ' + waitPageContribute.url())
     signale.info('[KitaBisa] prepare for make donation. donations detail field')
+
+    // check is campaign has `login` button, is not null mean login button exist (Unauthorized)
+    if (await this.page.$('div.form__row.align-center.donation > a') !== null) throw Error(`Unauthorized`)
+
     // write donation amount
     await this.page.waitForSelector('.white-box #target-donasi')
     await this.page.type('.white-box #target-donasi', options.amount.toString())
+
     // click "pilih", to select payment method. default is "Dompet Kebaikan"
     await this.page.waitForSelector('.category-select > .category-select-head > .col > .col--s2 > .text-blue')
     await this.click('.category-select > .category-select-head > .col > .col--s2 > .text-blue'); 
+
     // wait for sec for payment select modal opened
     await this.page.waitFor(5000)
+
     // select "Dompet Kebaikan" as payment method
     await this.page.waitForSelector('.list-nostyle > .category-select-list__item:nth-child(2) > .col > .col--s10 > .flex-1')
     await this.page.click('.list-nostyle > .category-select-list__item:nth-child(2) > .col > .col--s10 > .flex-1')
+
     // set donation as anonymous
     if (options.isAnonymous) {
       await this.page.waitForSelector('#yw0 > .white-box > .form__row > #termsCheckCampaigner')
       await this.page.click('#yw0 > .white-box > .form__row > #termsCheckCampaigner')
     }
+    
     // set donation comment
     await this.page.waitForSelector('.main-col > #yw0 #Donations_comment')
     await this.page.type('.main-col > #yw0 #Donations_comment', options.comment)
