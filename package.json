@@ -10,7 +10,13 @@
     "test": "jest",
     "start": "node -r dotenv/config app.js"
   },
-  "keywords": ["puppeteer", "typescript", "kitabisa.com", "kitabisa", "fundrasing"],
+  "keywords": [
+    "puppeteer",
+    "typescript",
+    "kitabisa.com",
+    "kitabisa",
+    "fundrasing"
+  ],
   "author": "Ryan Aunur Rassyid",
   "license": "MIT",
   "repository": {
@@ -18,21 +24,18 @@
     "url": "https://github.com/nyancodeid/kitabisa-puppeteer.git"
   },
   "dependencies": {
+    "axios": "^0.19.0",
     "dotenv": "^8.0.0",
     "jsonfile": "^5.0.0",
     "puppeteer": "^1.18.0",
     "signale": "^1.4.0"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/jest": "^24.0.15",
     "@types/jsonfile": "^5.0.0",
     "@types/puppeteer": "^1.12.4",
     "@types/signale": "^1.2.1",
-    "chalk": "^2.4.2",
-    "jest": "^24.8.0",
-    "jest-puppeteer": "^4.2.0",
-    "rimraf": "^2.6.3",
-    "tslint-config-airbnb": "^5.11.1",
     "typescript": "^3.5.2"
   }
 }
