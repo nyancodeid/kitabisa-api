@@ -2,10 +2,7 @@
   "name": "kitabisa-api",
   "version": "0.1.0",
   "description": "KitaBisa.com Automation API",
-  "main": "app.ts",
-  "jest": {
-    "preset": "jest-puppeteer"
-  },
+  "main": "dist/app.js",
   "scripts": {
     "test": "jest",
     "start": "node -r dotenv/config app.js"
