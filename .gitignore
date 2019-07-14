@@ -1,7 +1,9 @@
 node_modules/
 ~/
 donations/*.png
+donations/*.json
 cookies/*.json
 libs/*.js
+dist/*
 app.js
 .env
