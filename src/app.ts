@@ -17,8 +17,7 @@ class Apps extends KitaBisa {
   public async initialize(account: KitaBisaType.Account) {
     signale.info("[Apps][1/4] start browser");
 
-    // this.browser = await puppeteer.launch({ headless: false, args: ["--no-sandbox", "--disable-setuid-sandbox"] });
-    this.browser = await puppeteer.connect({ browserWSEndpoint: "ws://207.148.120.28:9222/devtools/browser/dacdc7ee-32f2-49d5-9e0d-a09378c186b8" });
+    this.browser = await puppeteer.launch({ headless: false, args: ["--no-sandbox", "--disable-setuid-sandbox"] });
     this.page = await this.browser.newPage();
 
     await this.requestHandler(true);
