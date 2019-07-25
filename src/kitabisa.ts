@@ -1,11 +1,8 @@
 import * as puppeteer from "puppeteer";
 import * as signale from "signale";
-import { config } from "dotenv";
 
 import Core from "./core";
 import * as KitaBisaType from "./core.d";
-
-config();
 
 class KitaBisa extends Core {
   public account: KitaBisaType.Account;

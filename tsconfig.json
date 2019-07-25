@@ -1,14 +1,10 @@
 {
   "compilerOptions": {
     "target": "es2015",
-    "watch": true,
     "module": "commonjs",
     "outDir": "dist/"
   },
   "include": [
     "src/**/*.ts",
-    "src/core.d.ts",
-    "global.d.ts",
-    "app.ts"
   ]
 }

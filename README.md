@@ -18,7 +18,7 @@ yarn add kitabisa-api
 5. getUserStatistic
 6. makeDonations
 
-## Intialize
+## Initialize
 ```js
 // ES6
 import KitaBisa from "kitabisa-api";

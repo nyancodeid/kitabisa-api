@@ -1,10 +1,11 @@
 {
   "name": "kitabisa-api",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "KitaBisa.com Automation API",
   "main": "dist/kitabisa.js",
-  "prepublish": "tsc",
   "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
     "docs": "typedoc --out docs --name 'KitaBisa Automation API' --readme ./README.md  ./src/"
   },
   "keywords": [

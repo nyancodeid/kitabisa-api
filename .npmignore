@@ -5,4 +5,5 @@ donations/*.json
 cookies/*.json
 tests/*
 backup.css
+dist/*
 .env
