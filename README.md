@@ -1,31 +1,104 @@
-# KitaBisa.com Puppeteer
-Automation API for kitabisa.com website
+# KitaBisa.com Automation API
+Automation API for kitabisa.com website with Puppeteer
+
+### Install
+```
+npm install @nyancodeid/kitabisa --save
+```
+or using yarn
+```
+yarn add @nyancodeid/kitabisa
+```
 
 ### Available Method
 1. isLogined
 2. signIn
 3. getBalance
-4. explorerCampaign (TEST)
+4. getCampaign
 5. getUserStatistic
 6. makeDonations
 
-### isLogined
-Check is user is already sign in or not. this checked by is user dashboard redirect into
-login pages or not. so we can know is user already sign in or not. this method return `Boolean`  
+## Intialize
+```js
+// ES6
+import KitaBisa from "kitabisa-api";
+const kitaBisa = new KitaBisa();
+```
+```js
+// ES5
+const KitaBisa = require("kitabisa-api");
+const kitaBisa = new KitaBisa();
+```
 
-### signIn
-Sign In is only available for KitaBisa account only for now, when you choose login with Google Sign In
-some this method successfuly, but google have authentication by using comfirm login action on Phone. 
-that's why we not writing sign in with google. 
+## Sign In
+```js
+// async await
+await kitaBisa.initialize({
+  email: process.env.EMAIL,
+  password: process.env.PASSWD
+});
+```
+```js
+// promise
+kitaBisa.initialize({
+  email: "YOUR EMAIL/PHONE",
+  password: "YOUR PASSWORD"
+}).then(function() {
+  // do after login
+});
+```
 
-### getBalance
-Try to get `Dompet Kebaikan` wallet balance.
+## getBalance
+```js
+// async await
+const balance = await kitaBisa.getBalance();
+```
 
-### explorerCampaign 
-Gets all campaigns on explorer page, it's still experiment and need more code to make it perfect for crawling.
+## getCampaign 
+```js
+// async await
+const campaigns = await kitaBisa.getCampaign([
+  KitaBisa.categories.BENCANA_ALAM,
+  KitaBisa.categories.RUMAH_IBADAH
+]);
 
-### getUserStatistic
-Gets user information like how many time you make Donation and how many you spend your balance for make donation (donation total)
+// example result
+[ { title: 'Darurat! Alirkan Air Bersih untuk Yogyakarta ',
+    url: 'https://kitabisa.com/atasikrisisairgunkid',
+    tumbnailUrl:
+     'https://img.kitabisa.cc/size/368x196/1484b40a-9b7e-49a9-8b5a-5b3cb0339552.jpg',
+    campaigner: 'Aksi Cepat Tanggap DIY',
+    isOrganitaion: true,
+    isVerified: true,
+    dayLeft: 56,
+    total: 44538524 } ]
+```
 
-### makeDonations
+## getUserStatistic
+```js
+// async await
+const statistic = await kitaBisa.getUserStatistic();
+```
+
+## makeDonations
 Create donation action by fill some options and you will get result and screenshot for evidance.
+```js
+await kitaBisa.makeDonation({
+  url: 'https://m.kitabisa.com/daruratkekeringan',
+  amount: 1000,
+  comment: "Semoga bermanfaat",
+  isAnonymous: true
+}).then((result) => {
+  // do something with result
+}).catch(console.error)
+
+// example result
+{ title: 'DARURAT AIR BERSIH DI CIAYUMAJAKUNING !',
+  duration: 14.104,
+  url: 'https://m.kitabisa.com/daruratkekeringan',
+  amount: 1000,
+  isAnonymous: true,
+  comment: '',
+  screenshot:
+   'PATH_TO/screenshot-donation-darurat-air-bersih-di-ciayumajakuning--1564070240601.png' }
+```
