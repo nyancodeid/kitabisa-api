@@ -3,6 +3,7 @@
   "version": "0.2.0",
   "description": "KitaBisa.com Automation API",
   "main": "dist/kitabisa.js",
+  "prepublish": "tsc",
   "scripts": {
     "docs": "typedoc --out docs --name 'KitaBisa Automation API' --readme ./README.md  ./src/"
   },
