@@ -34,8 +34,5 @@
     "@types/puppeteer": "^1.12.4",
     "@types/signale": "^1.2.1",
     "typescript": "^3.5.2"
-  },
-  "publishConfig": {
-    "registry":"https://npm.pkg.github.com/"
   }
 }

@@ -1,1 +1,8 @@
 docs/
+~/
+donations/*.png
+donations/*.json
+cookies/*.json
+tests/*
+backup.css
+.env
