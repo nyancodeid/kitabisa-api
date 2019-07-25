@@ -7,7 +7,7 @@
   },
   "include": [
     "src/**/*.ts",
-    "src/kitabisa.d.ts",
+    "src/core.d.ts",
     "global.d.ts",
     "app.ts"
   ]

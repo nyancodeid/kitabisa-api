@@ -30,23 +30,34 @@ export interface DonationOptions {
   test?: boolean
 }
 export interface Progress {
-  bar: number;
-  style: string;
+  bar: number,
+  style: string,
 }
 export interface LabelProperty {
-  style: string;
-  text: string;
+  style: string,
+  text: string,
 }
 export interface CampaignJSON {
-  campaigner: string;
-  title: string;
-  donation: string;
-  image: string;
-  href: string;
-  progress: Progress;
-  deadline: string;
-  label: boolean;
-  "label-property": LabelProperty;
-  tag: boolean;
-  "tag-icon": string;
+  campaigner: string,
+  title: string,
+  donation: string,
+  image: string,
+  href: string,
+  progress: Progress,
+  deadline: string,
+  label: boolean,
+  "label-property": LabelProperty,
+  tag: boolean,
+  "tag-icon": string,
+}
+export interface DonationReport {
+  screenshot: string,
+  url: string,
+  amount: number,
+  comment?: string,
+  isAnonymous?: boolean,
+  test?: boolean,
+  title: string,
+  duration: number,
+  onDonation: string,
 }
