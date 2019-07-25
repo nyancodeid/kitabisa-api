@@ -5,6 +5,8 @@ import { existsSync } from "fs";
 import { DonationReport } from "./core.d";
 import * as path from "path";
 
+const DONATIONS_PATH = process.env.DONATIONS_PATH || "../donations";
+
 export function getNumber(input: string): number {
   return Number(input.match(/\d+/g).join(""));
 }
@@ -16,14 +18,14 @@ export function randomNumber(min: number, max: number, multiple: number): number
 }
 export function createDonationEvidence(title: string): string {
   const titleLower = title.toLowerCase().replace(/[^a-zA-Z ]/g, "").replace(/ /gm, "-").trim();
-  return join(__dirname, `${process.env.DONATIONS_PATH}/screenshot-donation-${titleLower}-${Date.now()}.png`);
+  return join(__dirname, `${DONATIONS_PATH}/screenshot-donation-${titleLower}-${Date.now()}.png`);
 }
 export function hash(text: string): string {
   return createHash("md5").update(text).digest("hex");
 }
 export function donationHistorySave(donation: DonationReport) {
   let donationHistory = [];
-  const donationHistoryPath = path.join(__dirname, `${process.env.DONATIONS_PATH}/donations.json`);
+  const donationHistoryPath = path.join(__dirname, `${DONATIONS_PATH}/donations.json`);
 
   if (existsSync(donationHistoryPath)) {
     donationHistory = readFileSync(donationHistoryPath);

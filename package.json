@@ -22,17 +22,18 @@
   },
   "dependencies": {
     "axios": "^0.19.0",
-    "dotenv": "^8.0.0",
     "jsonfile": "^5.0.0",
     "puppeteer": "^1.18.0",
     "signale": "^1.4.0"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
+    "@types/dotenv": "^6.1.1",
     "@types/jest": "^24.0.15",
     "@types/jsonfile": "^5.0.0",
     "@types/puppeteer": "^1.12.4",
     "@types/signale": "^1.2.1",
+    "dotenv": "^8.0.0",
     "typescript": "^3.5.2"
   }
 }

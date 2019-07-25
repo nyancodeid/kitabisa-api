@@ -42,7 +42,7 @@ export default class Core {
     const hashFile = Helpers.hash(`cookie-login-${credential.email}`);
 
     this.account = credential;
-    this.cookieFile = join(__dirname, `${process.env.COOKIES_PATH}/${hashFile}.json`);
+    this.cookieFile = join(__dirname, `${process.env.COOKIES_PATH || "../cookies"}/${hashFile}.json`);
   }
   public async loadCookie(): Promise<boolean> {
     const previousSession = existsSync(this.cookieFile);
