@@ -3,6 +3,8 @@
   "version": "0.2.1",
   "description": "KitaBisa.com Automation API",
   "main": "dist/kitabisa.js",
+  "prepublishOnly": "npm run build",
+  "preversion": "npm run build",
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
