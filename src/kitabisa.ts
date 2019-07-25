@@ -1,5 +1,7 @@
 import * as puppeteer from "puppeteer";
 import * as signale from "signale";
+import { existsSync, mkdirSync } from "fs";
+import { join } from "path";
 
 import Core from "./core";
 import * as KitaBisaType from "./core.d";
@@ -27,6 +29,12 @@ class KitaBisa extends Core {
       "Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X) AppleWebKit/602.1.50 (KHTML, like Gecko) Mobile/14E5239e Safari/602.1");
 
     signale.info("[Apps][2/4] engine is ready!");
+
+    const COOKIES_PATH = join(__dirname, "../cookies/");
+    const DONATIONS_PATH = join(__dirname, "../donations/");
+
+    if (!existsSync(COOKIES_PATH)) { mkdirSync(COOKIES_PATH); }
+    if (!existsSync(DONATIONS_PATH)) { mkdirSync(DONATIONS_PATH); }
 
     await this.setCredential(account);
     await this.authenticate();

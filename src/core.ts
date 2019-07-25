@@ -10,6 +10,8 @@ import * as Elements from "./elements";
 import * as Helpers from "./helpers";
 import * as KitaBisaType from "./core.d";
 
+const COOKIES_PATH = "../cookies";
+
 export default class Core {
   public static readonly categories = {
     BEASISWA_PENDIDIKAN: 5,
@@ -42,7 +44,7 @@ export default class Core {
     const hashFile = Helpers.hash(`cookie-login-${credential.email}`);
 
     this.account = credential;
-    this.cookieFile = join(__dirname, `${process.env.COOKIES_PATH || "../cookies"}/${hashFile}.json`);
+    this.cookieFile = join(__dirname, `${COOKIES_PATH}/${hashFile}.json`);
   }
   public async loadCookie(): Promise<boolean> {
     const previousSession = existsSync(this.cookieFile);

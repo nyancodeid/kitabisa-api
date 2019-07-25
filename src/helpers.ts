@@ -5,7 +5,7 @@ import { existsSync } from "fs";
 import { DonationReport } from "./core.d";
 import * as path from "path";
 
-const DONATIONS_PATH = process.env.DONATIONS_PATH || "../donations";
+const DONATIONS_PATH = "../donations";
 
 export function getNumber(input: string): number {
   return Number(input.match(/\d+/g).join(""));

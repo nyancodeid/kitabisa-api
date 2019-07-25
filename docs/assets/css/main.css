@@ -601,7 +601,7 @@ body { background: #fdfdfd; font-family: 'Fira Sans', sans-serif; letter-spacing
 a { color: #4da6ff; text-decoration: none; }
 a:hover { text-decoration: underline; }
 
-code, pre { font-family: 'Fira Sans', sans-serif, monospace; padding: 0.2em; margin: 0; font-size: 14px; background-color: rgba(0, 0, 0, 0.04); }
+code, pre { font-family: "Source Code Pro", Menlo, monospace; padding: 0.2em; margin: 0; font-size: 14px; background-color: rgba(0, 0, 0, 0.04); }
 
 pre { padding: 10px; }
 pre code { padding: 0; font-size: 100%; background-color: transparent; }
