@@ -3,11 +3,11 @@ Automation API for kitabisa.com website with Puppeteer
 
 ### Install
 ```
-npm install @nyancodeid/kitabisa --save
+npm install kitabisa-api --save
 ```
 or using yarn
 ```
-yarn add @nyancodeid/kitabisa
+yarn add kitabisa-api
 ```
 
 ### Available Method
