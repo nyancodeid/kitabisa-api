@@ -204,11 +204,13 @@ export default class Core {
 
     if (this.page.url().includes("login")) { throw Error(`Unauthorized`); }
 
+    await this.page.waitForSelector(Elements.statistic.donationTotal);
+
     const result = await this.page.evaluate((donationTotal) => {
-      const elements = document.querySelectorAll(donationTotal);
+      const element = document.querySelector(donationTotal);
 
       return {
-        spend: elements[2].textContent,
+        spend: element.textContent,
       };
     }, Elements.statistic.donationTotal);
 
