@@ -15,12 +15,12 @@ Automation API for kitabisa.com website with Puppeteer. Read more on [documentat
 ## Initialize
 ```js
 // ES6
-import KitaBisa from "kitabisa-api";
+import KitaBisa from "./dist/kitabisa";
 const kitaBisa = new KitaBisa();
 ```
 ```js
 // ES5
-const KitaBisa = require("kitabisa-api");
+const KitaBisa = require("./dist/kitabisa");
 const kitaBisa = new KitaBisa();
 ```
 
