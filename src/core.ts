@@ -219,9 +219,15 @@ export default class Core {
       spend: Helpers.getNumber(result.spend),
     };
   }
+  /**
+   * Create donation action by fill some options and you will get result and screenshot for
+   * evidance.
+   */
   public async makeDonation(options: KitaBisaType.DonationOptions) {
     const startTask = Date.now();
 
+    if (typeof options !== "object") {
+      return Promise.reject(Error("[KitaBisa] makeDonations should have options as object")); }
     if (options.amount < 1000) {
       return Promise.reject(Error('[KitaBisa] unable to make donation, donation "amount" is under Rp. 1.000')); }
 
@@ -308,13 +314,23 @@ export default class Core {
     return donationItem;
   }
 
+  /**
+   * Evaluate click on spesific selector
+   * @param selector query selector element to click
+   */
   private async click(selector: string): Promise<any> {
     // await this.page.waitFor(2000)
     return this.page.evaluate((selectorDOM) => document.querySelector(selectorDOM).click(), selector);
   }
+  /**
+   * Clear page by navigate to `about:blank` page
+   */
   private clearPage() {
     return this.page.goto("about:blank");
   }
+  /**
+   * Save cookies after login with `hashing` name and `json` format
+   */
   private async saveCookie() {
     const cookiesObject = await this.page.cookies();
     // Write cookies to temp file to be used in other profile pages
@@ -324,6 +340,9 @@ export default class Core {
       signale.info("[KitaBisa] The file could not be written.", error);
     });
   }
+  /**
+   * Remove cookie file
+   */
   private async removeCookie(): Promise<boolean> {
     try {
       const previousSession = existsSync(this.cookieFile);

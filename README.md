@@ -98,7 +98,7 @@ await kitaBisa.makeDonation({
   url: 'https://m.kitabisa.com/daruratkekeringan',
   amount: 1000,
   isAnonymous: true,
-  comment: '',
+  comment: 'Semoga bermanfaat',
   screenshot:
    'PATH_TO/screenshot-donation-darurat-air-bersih-di-ciayumajakuning--1564070240601.png' }
 ```
