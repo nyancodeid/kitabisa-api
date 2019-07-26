@@ -1,6 +1,10 @@
 # KitaBisa.com Automation API
 Automation API for kitabisa.com website with Puppeteer. Read more on [documentation page](https://nyancodeid.github.io/kitabisa-api/)
 
+[![Repository](https://img.shields.io/badge/github-kitabisa--api-green?logo=github&style=flat)](https://github.com/nyancodeid/kitabisa-api)
+![License MIT](https://img.shields.io/github/license/nyancodeid/kitabisa-api)
+[![Issues](https://img.shields.io/github/issues/nyancodeid/kitabisa-api)](https://github.com/nyancodeid/kitabisa-api/issues)
+
 ### Available Method
 1. isLogined
 2. getBalance
