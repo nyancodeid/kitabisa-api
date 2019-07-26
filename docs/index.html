@@ -73,11 +73,11 @@
 					<li>isLogined</li>
 					<li>signIn</li>
 					<li>getBalance</li>
-					<li>explorerCampaign (TEST)</li>
+					<li>getCampaign</li>
 					<li>getUserStatistic</li>
 					<li>makeDonations</li>
 				</ol>
-				<h2 id="intialize">Intialize</h2>
+				<h2 id="initialize">Initialize</h2>
 				<pre><code class="language-js"><span class="hljs-comment">// ES6</span>
 <span class="hljs-keyword">import</span> KitaBisa <span class="hljs-keyword">from</span> <span class="hljs-string">"kitabisa-api"</span>;
 <span class="hljs-keyword">const</span> kitaBisa = <span class="hljs-keyword">new</span> KitaBisa();</code></pre>
@@ -97,10 +97,10 @@ kitaBisa.initialize({
 }).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
   <span class="hljs-comment">// do after login</span>
 });</code></pre>
-				<h3 id="getbalance">getBalance</h3>
+				<h2 id="getbalance">getBalance</h2>
 				<pre><code class="language-js"><span class="hljs-comment">// async await</span>
 <span class="hljs-keyword">const</span> balance = <span class="hljs-keyword">await</span> kitaBisa.getBalance();</code></pre>
-				<h3 id="getcampaign">getCampaign</h3>
+				<h2 id="getcampaign">getCampaign</h2>
 				<pre><code class="language-js"><span class="hljs-comment">// async await</span>
 <span class="hljs-keyword">const</span> campaigns = <span class="hljs-keyword">await</span> kitaBisa.getCampaign([
   KitaBisa.categories.BENCANA_ALAM,
@@ -117,10 +117,10 @@ kitaBisa.initialize({
     <span class="hljs-attr">isVerified</span>: <span class="hljs-literal">true</span>,
     <span class="hljs-attr">dayLeft</span>: <span class="hljs-number">56</span>,
     <span class="hljs-attr">total</span>: <span class="hljs-number">44538524</span> } ]</code></pre>
-				<h3 id="getuserstatistic">getUserStatistic</h3>
+				<h2 id="getuserstatistic">getUserStatistic</h2>
 				<pre><code class="language-js"><span class="hljs-comment">// async await</span>
 <span class="hljs-keyword">const</span> statistic = <span class="hljs-keyword">await</span> kitaBisa.getUserStatistic();</code></pre>
-				<h3 id="makedonations">makeDonations</h3>
+				<h2 id="makedonations">makeDonations</h2>
 				<p>Create donation action by fill some options and you will get result and screenshot for evidance.</p>
 				<pre><code class="language-js"><span class="hljs-keyword">await</span> kitaBisa.makeDonation({
   <span class="hljs-attr">url</span>: <span class="hljs-string">'https://m.kitabisa.com/daruratkekeringan'</span>,
@@ -137,7 +137,7 @@ kitaBisa.initialize({
   <span class="hljs-attr">url</span>: <span class="hljs-string">'https://m.kitabisa.com/daruratkekeringan'</span>,
   <span class="hljs-attr">amount</span>: <span class="hljs-number">1000</span>,
   <span class="hljs-attr">isAnonymous</span>: <span class="hljs-literal">true</span>,
-  <span class="hljs-attr">comment</span>: <span class="hljs-string">''</span>,
+  <span class="hljs-attr">comment</span>: <span class="hljs-string">'Semoga bermanfaat'</span>,
   <span class="hljs-attr">screenshot</span>:
    <span class="hljs-string">'PATH_TO/screenshot-donation-darurat-air-bersih-di-ciayumajakuning--1564070240601.png'</span> }</code></pre>
 			</div>

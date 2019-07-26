@@ -1,15 +1,6 @@
 # KitaBisa.com Automation API
 Automation API for kitabisa.com website with Puppeteer
 
-### Install
-```
-npm install kitabisa-api --save
-```
-or using yarn
-```
-yarn add kitabisa-api
-```
-
 ### Available Method
 1. isLogined
 2. signIn
