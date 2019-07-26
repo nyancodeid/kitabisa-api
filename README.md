@@ -1,13 +1,12 @@
 # KitaBisa.com Automation API
-Automation API for kitabisa.com website with Puppeteer
+Automation API for kitabisa.com website with Puppeteer. Read more on [documentation page](https://nyancodeid.github.io/kitabisa-api/)
 
 ### Available Method
 1. isLogined
-2. signIn
-3. getBalance
-4. getCampaign
-5. getUserStatistic
-6. makeDonations
+2. getBalance
+3. getCampaign
+4. getUserStatistic
+5. makeDonations
 
 ## Initialize
 ```js
