@@ -47,7 +47,7 @@ export function hash(text: string): string {
   return createHash("md5").update(text).digest("hex");
 }
 /**
- * @description Append object into array that stored on `donations.json` 
+ * @description Append object into array that stored on `donations.json`
  * to save `DonationReport`
  * @param {string} donation DonationReport object
  */
