@@ -157,6 +157,10 @@ export default class Core {
    * organization
    */
   public async getCampaign(categories: string[]): Promise<KitaBisaType.Campaign[]> {
+    if (!Array.isArray(categories)) {
+      throw Error("parameter 'categories' must be array");
+    }
+
     const sources = categories.map(
       (category) => `https://www.kitabisa.com/ajax/explore/${Helpers.randomNumber(1, 30, 3)}-3.json?category=${category}&filter=organization`,
     );
