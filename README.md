@@ -6,6 +6,10 @@ Automation API for kitabisa.com website with Puppeteer. Read more on [documentat
 [![Issues](https://img.shields.io/github/issues/nyancodeid/kitabisa-api)](https://github.com/nyancodeid/kitabisa-api/issues)
 
 ### Example Usage
+For example we used `getBalance` for get latest balance and check is available for donations. and
+next we grab random `getCampaign` with categories on it. next we run async with for loop to run 
+`makeDonation` method. Simple right?
+
 ![Example](https://media.giphy.com/media/ZXfIG734grkXQ2NsnP/giphy.gif)
 
 ### Available Method
