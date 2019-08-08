@@ -12,6 +12,15 @@ import * as KitaBisaType from "./core.d";
 
 const COOKIES_PATH = "../cookies";
 
+/**
+ * @typedef {object} DonationOption
+ * @property {string} url
+ * @property {number} amount
+ * @property {string} comment optional default: ''
+ * @property {boolean} isAnonymous optional default: true
+ * @property {boolean} test optional default: false
+ */
+
 export default class Core {
   public static readonly categories = {
     BEASISWA_PENDIDIKAN: 5,
@@ -77,7 +86,9 @@ export default class Core {
     return true;
   }
   /**
-   * Sign In is only available for KitaBisa account only for now, when you choose login
+   * @async
+   * @method signIn
+   * @description Sign In is only available for KitaBisa account only for now, when you choose login
    * with Google Sign In some this method successfuly, but google have authentication
    * by using comfirm login action on Phone. that's why we not writing sign in with google.
    */
@@ -123,7 +134,9 @@ export default class Core {
     }
   }
   /**
-   * Sign Our from KitaBisa.com site and remove stored cookie file on cookies folder
+   * @async
+   * @method signOut
+   * @description Sign Our from KitaBisa.com site and remove stored cookie file on cookies folder
    */
   public async signOut(): Promise<boolean> {
     await this.page.goto("https://m.kitabisa.com/logout", { waitUntil: "domcontentloaded" });
@@ -132,7 +145,9 @@ export default class Core {
   }
 
   /**
-   * Get `Dompet Kebaikan` wallet balance. This return balance left on wallet as a number
+   * @async
+   * @method getBalance
+   * @description Get `Dompet Kebaikan` wallet balance. This return balance left on wallet as a number
    */
   public async getBalance(): Promise<KitaBisaType.Balance> {
     signale.info("[KitaBisa] getting kitabisa account balance (Dompet Kebaikan)");
@@ -153,10 +168,13 @@ export default class Core {
     };
   }
   /**
-   * Gets some campaigns from explorer ajax request. Filtered for some category and only
+   * @async
+   * @method getCampaign
+   * @description Gets some campaigns from explorer ajax request. Filtered for some category and only
    * organization
+   * @param {number[]} categories Array of KitaBisa campaign categories
    */
-  public async getCampaign(categories: string[]): Promise<KitaBisaType.Campaign[]> {
+  public async getCampaign(categories: number[]): Promise<KitaBisaType.Campaign[]> {
     if (!Array.isArray(categories)) {
       throw Error("parameter 'categories' must be array");
     }
@@ -201,7 +219,9 @@ export default class Core {
     return formatedCampaigns;
   }
   /**
-   * Gets user information how much you spend your balance for make donation (donation total)
+   * @async
+   * @method getUserStatistic
+   * @description Gets user information how much you spend your balance for make donation (donation total)
    */
   public async getUserStatistic(): Promise<KitaBisaType.UserStatistic> {
     await this.page.goto("https://m.kitabisa.com/dashboard/donations", { waitUntil: "networkidle2" });
@@ -226,8 +246,11 @@ export default class Core {
     };
   }
   /**
-   * Create donation action by fill some options and you will get result and screenshot for
+   * @async
+   * @method makeDonation
+   * @desciption Create donation action by fill some options and you will get result and screenshot for
    * evidance.
+   * @param {DonationOption} options donation options
    */
   public async makeDonation(options: KitaBisaType.DonationOptions) {
     const startTask = Date.now();
@@ -321,21 +344,26 @@ export default class Core {
   }
 
   /**
-   * Evaluate click on spesific selector
-   * @param selector query selector element to click
+   * @async
+   * @method click
+   * @description Evaluate click on spesific selector
+   * @param {string} selector query selector element to click
    */
   private async click(selector: string): Promise<any> {
     // await this.page.waitFor(2000)
     return this.page.evaluate((selectorDOM) => document.querySelector(selectorDOM).click(), selector);
   }
   /**
-   * Clear page by navigate to `about:blank` page
+   * @method clearPage
+   * @description Clear page by navigate to `about:blank` page
    */
   private clearPage() {
     return this.page.goto("about:blank");
   }
   /**
-   * Save cookies after login with `hashing` name and `json` format
+   * @async
+   * @method saveCookie
+   * @description Save cookies after login with `hashing` name and `json` format
    */
   private async saveCookie() {
     const cookiesObject = await this.page.cookies();
@@ -347,7 +375,9 @@ export default class Core {
     });
   }
   /**
-   * Remove cookie file
+   * @async
+   * @method removeCookie
+   * @description Remove cookie file
    */
   private async removeCookie(): Promise<boolean> {
     try {
