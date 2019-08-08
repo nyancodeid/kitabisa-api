@@ -71,11 +71,11 @@
 				<a href="https://github.com/nyancodeid/kitabisa-api/issues"><img src="https://img.shields.io/github/issues/nyancodeid/kitabisa-api" alt="Issues"></a></p>
 				<h3 id="available-method">Available Method</h3>
 				<ol>
-					<li>isLogined</li>
-					<li>getBalance</li>
-					<li>getCampaign</li>
-					<li>getUserStatistic</li>
-					<li>makeDonations</li>
+					<li><a href="#initialize">isLogined</a></li>
+					<li><a href="#getbalance">getBalance</a></li>
+					<li><a href="#getcampaign">getCampaign</a></li>
+					<li><a href="#getuserstatistic">getUserStatistic</a></li>
+					<li><a href="#makedonation">makeDonation</a></li>
 				</ol>
 				<h2 id="initialize">Initialize</h2>
 				<pre><code class="language-js"><span class="hljs-comment">// ES6</span>
@@ -120,7 +120,7 @@ kitaBisa.initialize({
 				<h2 id="getuserstatistic">getUserStatistic</h2>
 				<pre><code class="language-js"><span class="hljs-comment">// async await</span>
 <span class="hljs-keyword">const</span> statistic = <span class="hljs-keyword">await</span> kitaBisa.getUserStatistic();</code></pre>
-				<h2 id="makedonations">makeDonations</h2>
+				<h2 id="makedonation">makeDonation</h2>
 				<p>Create donation action by fill some options and you will get result and screenshot for evidance.</p>
 				<pre><code class="language-js"><span class="hljs-keyword">await</span> kitaBisa.makeDonation({
   <span class="hljs-attr">url</span>: <span class="hljs-string">'https://m.kitabisa.com/daruratkekeringan'</span>,

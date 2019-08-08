@@ -6,11 +6,11 @@ Automation API for kitabisa.com website with Puppeteer. Read more on [documentat
 [![Issues](https://img.shields.io/github/issues/nyancodeid/kitabisa-api)](https://github.com/nyancodeid/kitabisa-api/issues)
 
 ### Available Method
-1. isLogined
-2. getBalance
-3. getCampaign
-4. getUserStatistic
-5. makeDonations
+1. [isLogined](#initialize)
+2. [getBalance](#getbalance)
+3. [getCampaign](#getcampaign)
+4. [getUserStatistic](#getuserstatistic)
+5. [makeDonation](#makedonation)
 
 ## Initialize
 ```js
@@ -74,7 +74,7 @@ const campaigns = await kitaBisa.getCampaign([
 const statistic = await kitaBisa.getUserStatistic();
 ```
 
-## makeDonations
+## makeDonation
 Create donation action by fill some options and you will get result and screenshot for evidance.
 ```js
 await kitaBisa.makeDonation({
