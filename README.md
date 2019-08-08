@@ -5,6 +5,9 @@ Automation API for kitabisa.com website with Puppeteer. Read more on [documentat
 ![License MIT](https://img.shields.io/github/license/nyancodeid/kitabisa-api)
 [![Issues](https://img.shields.io/github/issues/nyancodeid/kitabisa-api)](https://github.com/nyancodeid/kitabisa-api/issues)
 
+### Example Usage
+![Example](https://media.giphy.com/media/ZXfIG734grkXQ2NsnP/giphy.gif)
+
 ### Available Method
 1. [isLogined](#initialize)
 2. [getBalance](#getbalance)
