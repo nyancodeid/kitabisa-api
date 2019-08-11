@@ -1,6 +1,7 @@
 export const donation = {
   input: ".white-box #target-donasi",
-  wallet: "div.form__row.form__row--alt.text-14 > div > ul > li:nth-child(2)",
+  wallet: "div.form__row.form__row--alt.text-14 ul li:nth-child(2)",
+  inputWallet: "input#categoryInputTarget",
   hideName: "div.white-box.base-margin-bottom.mobile-content > div:nth-child(5) > label > div > input.switch-toggle__input",
   comment: "#commentArea > textarea",
   submit: "#yw0 > div.pwa-base-margin-left-right > button",

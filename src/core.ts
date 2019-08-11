@@ -45,6 +45,7 @@ export default class Core {
     LAINNYA: 20,
     ALL: 0,
   };
+  public browser: puppeteer.Browser;
   public page: puppeteer.Page;
   public isRedirected: boolean;
   public account: KitaBisaType.Account;
@@ -58,11 +59,13 @@ export default class Core {
   }
   public async loadCookie(): Promise<boolean> {
     const previousSession = existsSync(this.cookieFile);
+
     if (previousSession) {
       // If file exist load the cookies
-      const cookiesArr = require(this.cookieFile);
-      if (cookiesArr.length !== 0) {
-        for (const cookie of cookiesArr) {
+      const cookies = require(this.cookieFile);
+
+      if (cookies.length !== 0) {
+        for (const cookie of cookies) {
           await this.page.setCookie(cookie);
         }
         signale.info("[KitaBisa] Session has been loaded in the browser");
@@ -77,15 +80,12 @@ export default class Core {
    * login pages or not. so we can know is user already sign in or not.
    */
   public async isLogined() {
-    console.time("isLogined");
     await this.page.goto("https://m.kitabisa.com/login", { waitUntil: "domcontentloaded" });
     // set isRedirected to false
     this.isRedirected = false;
     const pageUrl = this.page.url();
     // clear page
     await this.clearPage();
-
-    console.timeEnd("isLogined");
 
     if (pageUrl.includes("login")) { return false; }
     return true;
@@ -259,6 +259,7 @@ export default class Core {
    */
   public async makeDonation(options: KitaBisaType.DonationOptions) {
     const startTask = Date.now();
+    const donationUrl = options.url + "/contribute";
 
     if (typeof options !== "object") {
       return Promise.reject(Error("[KitaBisa] makeDonations should have options as object")); }
@@ -271,13 +272,17 @@ export default class Core {
     options.comment = (typeof options.comment === "string") ? options.comment : "";
 
     signale.info("[KitaBisa][1/5] navigate to campaign page");
-    await this.page.goto(options.url + "/contribute", { waitUntil: "load" });
+
+    await this.page.goto(donationUrl, { waitUntil: "domcontentloaded" });
 
     const title = await this.page.title().then((titleDOM) => titleDOM.replace("Kitabisa! - ", ""));
 
     signale.info("[KitaBisa][1/5] campaign title is " + title);
     signale.info("[KitaBisa][2/5] prepare for make donation. donations detail field");
-
+    // prevent fron redirected
+    if (this.page.url() !== donationUrl) {
+      await this.page.goto(donationUrl, { waitUntil: "domcontentloaded" });
+    }
     // check is campaign has `login` button, is not null mean login button exist (Unauthorized)
     if (await this.page.$(Elements.donation.login) !== null) { throw Error(`Unauthorized`); }
 
@@ -292,13 +297,19 @@ export default class Core {
     // write donation amount
     await this.page.type(Elements.donation.input, options.amount.toString());
     // select "Dompet Kebaikan" as payment method
-    await this.page.click(Elements.donation.wallet);
+    await this.page.evaluate((inputWallet) => {
+      document.querySelector(inputWallet).value = 21; // 21 = Dompet Kebaikan
+    }, Elements.donation.inputWallet);
     // set donation as anonymous
     if (options.isAnonymous) {
       await this.page.click(Elements.donation.hideName);
     }
     // set donation comment
     await this.page.type(Elements.donation.comment, options.comment);
+    // submit donation details
+    await this.click(Elements.donation.submit);
+    // wait navigator to be ready
+    await this.page.waitForNavigation({ waitUntil: "load" });
 
     if (options.test) {
       return {
@@ -307,13 +318,9 @@ export default class Core {
         ...options,
       };
     }
-    // submit donation details
-    await this.click(Elements.donation.submit);
-    // wait navigator to be ready
-    await this.page.waitForNavigation({ waitUntil: "load" });
-
     const pageTitle = await this.page.title();
     if (!pageTitle.includes("Rangkuman Pembayaran")) {
+      console.log(pageTitle);
       return Promise.reject(Error("[KitaBisa] unable to verified campaign payment")); }
 
     signale.info("[KitaBisa][3/5] Confirmed donation action and process payment");
@@ -321,7 +328,7 @@ export default class Core {
     await this.page.waitForSelector(Elements.confirm.button);
     await this.click(Elements.confirm.button);
     // wait navigator to be ready
-    await this.page.waitForNavigation({ waitUntil: "networkidle2" });
+    await this.page.waitForNavigation({ waitUntil: "networkidle0" });
 
     signale.info("[KitaBisa][4/5] Payment Done.");
     signale.info("[KitaBisa][5/5] Save donation detail screenshot");

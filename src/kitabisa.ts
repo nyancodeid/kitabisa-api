@@ -28,7 +28,6 @@ export default class KitaBisa extends Core {
    * @param {Account} account
    */
   public async initialize(account: KitaBisaType.Account) {
-    console.time("Initialize");
     signale.info("[Apps][1/4] start browser");
     // initialize puppeteer browser to launch and add new page
     // use `headless: false` on development env
@@ -57,7 +56,6 @@ export default class KitaBisa extends Core {
     await this.setCredential(account);
     // run authentication
     await this.authenticate();
-    console.timeEnd("Initialize");
   }
 
   /**
