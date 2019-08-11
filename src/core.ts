@@ -46,6 +46,7 @@ export default class Core {
     ALL: 0,
   };
   public page: puppeteer.Page;
+  public isRedirected: boolean;
   public account: KitaBisaType.Account;
   public cookieFile: string;
 
@@ -76,11 +77,15 @@ export default class Core {
    * login pages or not. so we can know is user already sign in or not.
    */
   public async isLogined() {
+    console.time("isLogined");
     await this.page.goto("https://m.kitabisa.com/login", { waitUntil: "domcontentloaded" });
-
+    // set isRedirected to false
+    this.isRedirected = false;
     const pageUrl = this.page.url();
     // clear page
     await this.clearPage();
+
+    console.timeEnd("isLogined");
 
     if (pageUrl.includes("login")) { return false; }
     return true;
@@ -151,7 +156,7 @@ export default class Core {
    */
   public async getBalance(): Promise<KitaBisaType.Balance> {
     signale.info("[KitaBisa] getting kitabisa account balance (Dompet Kebaikan)");
-    await this.page.goto("https://www.kitabisa.com/dashboard/wallet", { waitUntil: "networkidle2" });
+    await this.page.goto("https://www.kitabisa.com/dashboard/wallet", { waitUntil: "domcontentloaded" });
 
     if (this.page.url().includes("login")) { throw Error(`Unauthorized`); }
 
@@ -284,7 +289,6 @@ export default class Core {
       this.page.waitForSelector(Elements.donation.comment),
       this.page.waitForSelector(Elements.donation.submit),
     ]);
-
     // write donation amount
     await this.page.type(Elements.donation.input, options.amount.toString());
     // select "Dompet Kebaikan" as payment method

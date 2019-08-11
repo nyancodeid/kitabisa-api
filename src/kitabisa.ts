@@ -12,11 +12,12 @@ import * as KitaBisaType from "./core.d";
  * @property {string} password kitabisa password account
  */
 
-class KitaBisa extends Core {
+export default class KitaBisa extends Core {
   public account: KitaBisaType.Account;
 
   public browser: puppeteer.Browser;
   public page: puppeteer.Page;
+  public isRedirected: boolean;
 
   constructor() {
     super();
@@ -27,10 +28,14 @@ class KitaBisa extends Core {
    * @param {Account} account
    */
   public async initialize(account: KitaBisaType.Account) {
+    console.time("Initialize");
     signale.info("[Apps][1/4] start browser");
     // initialize puppeteer browser to launch and add new page
     // use `headless: false` on development env
-    this.browser = await puppeteer.launch({ headless: true });
+    this.browser = await puppeteer.launch({
+      devtools: false,
+      headless: true,
+      args: ["--disable-features=site-per-process"] });
     this.page = await this.browser.newPage();
     // create request handler to filter unused css and images
     await this.requestHandler(true);
@@ -52,6 +57,21 @@ class KitaBisa extends Core {
     await this.setCredential(account);
     // run authentication
     await this.authenticate();
+    console.timeEnd("Initialize");
+  }
+
+  /**
+   * @method close
+   * @description close handless browser
+   */
+  public async close() {
+    try {
+      await this.browser.close();
+
+      return { success: true };
+    } catch (error) {
+      return { success: false, error };
+    }
   }
 
   /**
@@ -83,6 +103,7 @@ class KitaBisa extends Core {
    * @async
    */
   private async requestHandler(block: boolean) {
+    const redirectStatuses = [301, 302, 303, 307, 308];
     const callbackRequest = (request: puppeteer.Request) => {
       const headers = request.headers();
       if (headers.referer) {
@@ -92,21 +113,35 @@ class KitaBisa extends Core {
       }
 
       // block only resouceType images and not from kitabisa.com assets (web required)
+      if (this.isRedirected && request.resourceType() !== "document") {
+        return request.abort();
+      }
       if (request.resourceType() === "image" && !request.url().includes("assets.kitabisa.com/images/")) {
         request.abort();
+      } else if (request.resourceType() === "script" && !request.url().includes("kitabisa.com")) {
+        request.abort();
       } else if (request.resourceType() === "stylesheet") {
+        request.abort();
+      } else if (request.url().includes("asset_icons")) {
         request.abort();
       } else {
         request.continue();
       }
     };
+    const callbackResponse = (response: puppeteer.Response) => {
+      if (redirectStatuses.includes(response.status())
+        && response.request().resourceType() === "document"
+        && response.url() === "https://m.kitabisa.com/login") {
+          this.isRedirected = true;
+      }
+    };
 
     if (block) {
       this.page.on("request", callbackRequest);
+      this.page.on("response", callbackResponse);
     } else {
       this.page.off("request", callbackRequest);
+      this.page.off("response", callbackResponse);
     }
   }
 }
-
-module.exports = KitaBisa;
