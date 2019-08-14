@@ -50,6 +50,7 @@ export default class Core {
   public isRedirected: boolean;
   public account: KitaBisaType.Account;
   public cookieFile: string;
+  public isNeedEvidence: boolean;
 
   public setCredential(credential: KitaBisaType.Account) {
     const hashFile = Helpers.hash(`cookie-login-${credential.email}`);
@@ -104,17 +105,18 @@ export default class Core {
 
       signale.info("[KitaBisa][2/4] Wait all elements");
       await Promise.all([
-        this.page.waitForSelector("#mlogin_input_email"),
-        this.page.waitForSelector("#showPassField", { visible: true }),
-        this.page.waitForSelector("#mlogin_btn_remember"),
-        this.page.waitForSelector("#mlogin_btn_submit"),
+        this.page.waitForSelector(Elements.login.email),
+        this.page.waitForSelector(Elements.login.passwd, { visible: true }),
+        this.page.waitForSelector(Elements.login.remember),
+        this.page.waitForSelector(Elements.login.submit),
       ]);
 
       signale.info("[KitaBisa][3/4] Input login field");
       // login email/phone field
-      await this.page.type("#mlogin_input_email", this.account.email );
-      // password field
-      await this.page.type("#showPassField", this.account.password );
+      await this.page.evaluate((elementEmail, email, elementPassword, password) => {
+        document.querySelector(elementEmail).value = email;
+        document.querySelector(elementPassword).value = password;
+      }, Elements.login.email, this.account.email, Elements.login.passwd, this.account.password);
       // remember login checkbox
       await this.page.click("#mlogin_btn_remember");
       // submit login
@@ -270,6 +272,10 @@ export default class Core {
     options.isAnonymous = (typeof options.isAnonymous === "boolean") ? options.isAnonymous : true;
     // default `comment` is empty string.
     options.comment = (typeof options.comment === "string") ? options.comment : "";
+    // default `evidence` is true.
+    options.evidence = (typeof options.evidence === "boolean") ? options.evidence : true;
+
+    this.isNeedEvidence = options.evidence;
 
     signale.info("[KitaBisa][1/5] navigate to campaign page");
 
@@ -320,7 +326,6 @@ export default class Core {
     }
     const pageTitle = await this.page.title();
     if (!pageTitle.includes("Rangkuman Pembayaran")) {
-      console.log(pageTitle);
       return Promise.reject(Error("[KitaBisa] unable to verified campaign payment")); }
 
     signale.info("[KitaBisa][3/5] Confirmed donation action and process payment");
@@ -333,8 +338,10 @@ export default class Core {
     signale.info("[KitaBisa][4/5] Payment Done.");
     signale.info("[KitaBisa][5/5] Save donation detail screenshot");
     // save donation thanks from kitabisa.com
-    const screenshotPath = Helpers.createDonationEvidence(title);
-    await this.page.screenshot({ path: screenshotPath, fullPage: true });
+    const screenshotPath = (options.evidence) ? Helpers.createDonationEvidence(title) : null;
+    if (options.evidence) {
+      await this.page.screenshot({ path: screenshotPath, fullPage: true });
+    }
 
     await this.clearPage();
 
@@ -347,7 +354,9 @@ export default class Core {
     };
 
     // save donation on donations history
+    // and make `isNeedEvidence` to default
     Helpers.donationHistorySave(donationItem);
+    this.isNeedEvidence = true;
 
     signale.success("[KitaBisa][5/5] donation success!");
 

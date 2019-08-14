@@ -18,6 +18,7 @@ export default class KitaBisa extends Core {
   public browser: puppeteer.Browser;
   public page: puppeteer.Page;
   public isRedirected: boolean;
+  public isNeedEvidence: boolean;
 
   constructor() {
     super();
@@ -104,8 +105,10 @@ export default class KitaBisa extends Core {
     const redirectStatuses = [301, 302, 303, 307, 308];
     const callbackRequest = (request: puppeteer.Request) => {
       const headers = request.headers();
-      if (headers.referer) {
-        if (headers.referer.indexOf("pay-with-wallet/done") !== -1) {
+      // Allow all request from evidence and thanks page after make deposit.
+      // To show as normal website display (for evidence).
+      if (headers.referer && this.isNeedEvidence) {
+        if (headers.referer.includes("pay-with-wallet/done")) {
           return request.continue();
         }
       }
@@ -115,18 +118,25 @@ export default class KitaBisa extends Core {
         return request.abort();
       }
       if (request.resourceType() === "image" && !request.url().includes("assets.kitabisa.com/images/")) {
+        // Block requests with the type of images
+        // and not from kitabisa origin assets
         request.abort();
       } else if (request.resourceType() === "script" && !request.url().includes("kitabisa.com")) {
+        // Block requests with the type of script
+        // and not from kitabisa origin web
         request.abort();
       } else if (request.resourceType() === "stylesheet") {
+        // Block request with the type of stylesheet/css
         request.abort();
       } else if (request.url().includes("asset_icons")) {
+        // Block request with `assets_icons` included on url
         request.abort();
       } else {
         request.continue();
       }
     };
     const callbackResponse = (response: puppeteer.Response) => {
+      // Check is reponse as Redirect from login pages?
       if (redirectStatuses.includes(response.status())
         && response.request().resourceType() === "document"
         && response.url() === "https://m.kitabisa.com/login") {

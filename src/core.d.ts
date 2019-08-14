@@ -25,6 +25,7 @@ export interface SignInResult {
 export interface DonationOptions {
   url: string,
   amount: number,
+  evidence?: boolean,
   comment?: string,
   isAnonymous?: boolean,
   test?: boolean
