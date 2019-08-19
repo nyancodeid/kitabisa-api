@@ -30,12 +30,22 @@ export default class KitaBisa extends Core {
    */
   public async initialize(account: KitaBisaType.Account) {
     signale.info("[Apps][1/4] start browser");
+
+    const exts = [
+      join(__dirname, "../exts/disconnect/5.19.3_0"),
+      join(__dirname, "../exts/ublock/1.21.6_0"),
+    ];
+
     // initialize puppeteer browser to launch and add new page
     // use `headless: false` on development env
     this.browser = await puppeteer.launch({
       devtools: false,
       headless: true,
-      args: ["--disable-features=site-per-process"] });
+      args: [
+        "--disable-features=site-per-process",
+        "--disable-extensions-except=" + exts.join(","),
+        "--load-extensions=" + exts.join(","),
+      ] });
     this.page = await this.browser.newPage();
     // create request handler to filter unused css and images
     await this.requestHandler(true);

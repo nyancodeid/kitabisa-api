@@ -1,0 +1,27 @@
+{
+   "background": {
+      "scripts": [ "scripts/vendor/moment/moment.js", "scripts/vendor/jquery/jquery.js", "scripts/vendor/sitename/alttlds.js", "scripts/vendor/sitename/tldpatch.js", "scripts/vendor/sitename/sitename.js", "scripts/services.js", "scripts/background.js" ]
+   },
+   "browser_action": {
+      "default_title": "View and manage requests"
+   },
+   "content_scripts": [ {
+      "all_frames": true,
+      "css": [ "stylesheets/content.css" ],
+      "js": [ "scripts/vendor/jquery/jquery.js", "scripts/vendor/sitename/alttlds.js", "scripts/vendor/sitename/tldpatch.js", "scripts/vendor/sitename/sitename.js", "scripts/content.js" ],
+      "matches": [ "http://*/*", "https://*/*" ],
+      "run_at": "document_start"
+   } ],
+   "description": "Make the web faster, more private, and more secure.",
+   "icons": {
+      "128": "images/128.png",
+      "48": "images/48.png"
+   },
+   "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQD7jr4SbXDEbGHJhx8A5p0M9icfVTGS2mPOe6F/Nam8nlcMP34Vg8hp1oEnmGwyWTRJi+jD1v8dT7hXA8WqL5Tt+gR2EPYpn8Hx7r0PqcxJcBZp0wW+LcvpY6D48wmK/Rc02bhO+UUUZpw8f/wLOdOVDG7mDkdivRuzIkdHx1HMMQIDAQAB",
+   "manifest_version": 2,
+   "name": "Disconnect",
+   "permissions": [ "cookies", "tabs", "unlimitedStorage", "webNavigation", "webRequest", "webRequestBlocking", "http://*/*", "https://*/*" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "5.19.3",
+   "web_accessible_resources": [  ]
+}
