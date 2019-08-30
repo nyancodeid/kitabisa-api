@@ -1,5 +1,5 @@
 import * as puppeteer from "puppeteer";
-import * as signale from "signale";
+import { signale } from "./signale";
 import { existsSync, mkdirSync } from "fs";
 import { join } from "path";
 
@@ -19,6 +19,7 @@ export default class KitaBisa extends Core {
   public page: puppeteer.Page;
   public isRedirected: boolean;
   public isNeedEvidence: boolean;
+  public isInitialized: boolean = false;
 
   constructor() {
     super();
@@ -53,7 +54,7 @@ export default class KitaBisa extends Core {
     await this.page.setRequestInterception(true);
     // set custom user agent
     await this.page.setUserAgent(
-      "Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X) AppleWebKit/602.1.50 (KHTML, like Gecko) Mobile/14E5239e Safari/602.1");
+      "Mozilla/5.0 (Linux; Android 9; SM-G950F Build/PPR1.180610.011; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.157 Mobile Safari/537.36");
 
     signale.info("[Apps][2/4] engine is ready!");
 
@@ -67,6 +68,8 @@ export default class KitaBisa extends Core {
     await this.setCredential(account);
     // run authentication
     await this.authenticate();
+
+    this.isInitialized = true;
   }
 
   /**
@@ -135,9 +138,6 @@ export default class KitaBisa extends Core {
         // Block requests with the type of script
         // and not from kitabisa origin web
         request.abort();
-      } else if (request.resourceType() === "stylesheet") {
-        // Block request with the type of stylesheet/css
-        request.abort();
       } else if (request.url().includes("asset_icons")) {
         // Block request with `assets_icons` included on url
         request.abort();
@@ -149,7 +149,7 @@ export default class KitaBisa extends Core {
       // Check is reponse as Redirect from login pages?
       if (redirectStatuses.includes(response.status())
         && response.request().resourceType() === "document"
-        && response.url() === "https://m.kitabisa.com/login") {
+        && response.url() === "https://kitabisa.com/login") {
           this.isRedirected = true;
       }
     };
