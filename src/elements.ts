@@ -1,22 +1,22 @@
 export const donation = {
-  input: ".white-box #target-donasi",
-  wallet: "div.form__row.form__row--alt.text-14 ul li:nth-child(2)",
-  inputWallet: "input#categoryInputTarget",
-  hideName: "div.white-box.base-margin-bottom.mobile-content > div:nth-child(5) > label > div > input.switch-toggle__input",
-  comment: "#commentArea > textarea",
-  submit: "#yw0 > div.pwa-base-margin-left-right > button",
-  login: "div.form__row.align-center.donation > a",
+  input: "#contribute_inputfield_amount-donation",
+  wallet: ".style__Form-sc-12bsx5v-1 > .style__PaymentContainer-sc-1wfxixd-0 > .style__Lists-sc-1wfxixd-2 > .style__VendorLists-sc-1wfxixd-5:nth-child(5)",
+  inputWallet: "#contribute_button_pilih-metode-pembayaran",
+  hideName: ".style__SwitchToggleWrapper-sc-10thwv-1 > .style__SwitchToggleSlider-sc-10thwv-2",
+  comment: "textarea#contribute_textarea_dukungan",
+  submit: "#contribute_button_lanjutkan-pembayaran",
+  login: ".style__UserContainer-sc-1l6tpe1-0 a",
 };
 export const confirm = {
   button: "#pwaNew > div.pwa-wrapper > main > section > div > div > p:nth-child(5) > a",
 };
 export const statistic = {
-  donationTotal: ".pwa-donasi-total > h2",
-  balance: "#pwaDompet .box-saldo h3.no-margin",
+  donationTotal: null,
+  balance: "span.wallet-balance",
 };
 export const login = {
-  email: "#mlogin_input_email",
-  passwd: "#showPassField",
+  email: "#login_inputfield_wa-email",
+  passwd: "#login_inputfield_password",
   remember: "#mlogin_btn_remember",
-  submit: "#mlogin_btn_submit",
+  submit: "#login_button_masuk",
 };

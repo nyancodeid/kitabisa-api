@@ -1,6 +1,6 @@
 import * as puppeteer from "puppeteer";
 import * as jsonfile from "jsonfile";
-import * as signale from "signale";
+import { signale } from "./signale";
 import axios from "axios";
 
 import { existsSync, unlinkSync } from "fs";
@@ -81,7 +81,7 @@ export default class Core {
    * login pages or not. so we can know is user already sign in or not.
    */
   public async isLogined() {
-    await this.page.goto("https://m.kitabisa.com/login", { waitUntil: "domcontentloaded" });
+    await this.page.goto("https://kitabisa.com/login", { waitUntil: "domcontentloaded" });
     // set isRedirected to false
     this.isRedirected = false;
     const pageUrl = this.page.url();
@@ -101,26 +101,28 @@ export default class Core {
   public async signIn(): Promise<KitaBisaType.SignInResult> {
     try {
       signale.info("[KitaBisa][1/4] Start kitabisa login process");
-      await this.page.goto("https://m.kitabisa.com/login", { waitUntil: "load" });
+      await this.page.goto("https://kitabisa.com/login", { waitUntil: "load" });
 
       signale.info("[KitaBisa][2/4] Wait all elements");
       await Promise.all([
         this.page.waitForSelector(Elements.login.email),
         this.page.waitForSelector(Elements.login.passwd, { visible: true }),
-        this.page.waitForSelector(Elements.login.remember),
         this.page.waitForSelector(Elements.login.submit),
       ]);
 
       signale.info("[KitaBisa][3/4] Input login field");
       // login email/phone field
-      await this.page.evaluate((elementEmail, email, elementPassword, password) => {
-        document.querySelector(elementEmail).value = email;
-        document.querySelector(elementPassword).value = password;
-      }, Elements.login.email, this.account.email, Elements.login.passwd, this.account.password);
+      await this.page.type(Elements.login.email, this.account.email);
+      await this.page.type(Elements.login.passwd, this.account.password);
       // remember login checkbox
-      await this.page.click("#mlogin_btn_remember");
+      // await this.page.click(Elemets.login.remember);
       // submit login
-      await this.page.click("#mlogin_btn_submit");
+      await this.page.evaluate(() => {
+        // tslint:disable-next-line: no-debugger
+        debugger;
+      });
+      await this.page.click(Elements.login.submit);
+      await this.page.waitForNavigation({ waitUntil: "load" });
       // save login cookie
       await this.saveCookie();
       const pageUrl = this.page.url();
@@ -146,7 +148,7 @@ export default class Core {
    * @description Sign Our from KitaBisa.com site and remove stored cookie file on cookies folder
    */
   public async signOut(): Promise<boolean> {
-    await this.page.goto("https://m.kitabisa.com/logout", { waitUntil: "domcontentloaded" });
+    await this.page.goto("https://kitabisa.com/logout", { waitUntil: "domcontentloaded" });
 
     return await this.removeCookie();
   }
@@ -158,7 +160,7 @@ export default class Core {
    */
   public async getBalance(): Promise<KitaBisaType.Balance> {
     signale.info("[KitaBisa] getting kitabisa account balance (Dompet Kebaikan)");
-    await this.page.goto("https://www.kitabisa.com/dashboard/wallet", { waitUntil: "domcontentloaded" });
+    await this.page.goto("https://kitabisa.com/user", { waitUntil: "domcontentloaded" });
 
     if (this.page.url().includes("login")) { throw Error(`Unauthorized`); }
 
@@ -187,7 +189,7 @@ export default class Core {
     }
 
     const sources = categories.map(
-      (category) => `https://www.kitabisa.com/ajax/explore/${Helpers.randomNumber(1, 30, 3)}-3.json?category=${category}&filter=organization`,
+      (category) => `https://core.ktbs.io/campaigns?category_id=${category}&`,
     );
 
     const campaignsPromise = sources.map(async (source: string) => {
@@ -196,34 +198,28 @@ export default class Core {
     });
 
     const campaigns = await Promise.all(campaignsPromise);
-    const formatedCampaigns = [];
 
-    for (const campaign of campaigns) {
-      for (const list of campaign.campaigns) {
+    const formater = campaigns.map((data) => {
+      return data.data.map((list: KitaBisaType.CampaignJSON) => {
         const status = { isOrganitaion: false, isVerified: false };
-        const dayLeft = (typeof list.deadline !== "number") ? 0 : list.deadline;
+        const dayLeft = (typeof list.days_remaining !== "number") ? 0 : list.days_remaining;
 
-        if (list["tag-icon"].includes("org") && !list["tag-icon"].includes("user")) {
-          status.isOrganitaion = true;
-        }
-        if (list["tag-icon"].includes("verified")) {
-          status.isVerified = true;
-        }
+        status.isOrganitaion = (list.campaigner_type === "ORGANIZATION") ? true : false;
 
-        formatedCampaigns.push({
+        return {
           title: list.title,
-          url: list.href,
+          url: `https://kitabisa.com/campaign/${list.short_url}`,
           tumbnailUrl: list.image,
           campaigner: list.campaigner,
           isOrganitaion: status.isOrganitaion,
-          isVerified: status.isVerified,
+          isVerified: list.campaigner_is_verified,
           dayLeft,
-          total: Helpers.getNumber(list.donation),
-        });
-      }
-    }
+          total: list.donation_received,
+        };
+      });
+    });
 
-    return formatedCampaigns;
+    return formater.reduce((acc, val) => acc.concat(val), []);
   }
   /**
    * @async
@@ -231,7 +227,13 @@ export default class Core {
    * @description Gets user information how much you spend your balance for make donation (donation total)
    */
   public async getUserStatistic(): Promise<KitaBisaType.UserStatistic> {
-    await this.page.goto("https://m.kitabisa.com/dashboard/donations", { waitUntil: "networkidle2" });
+    if (!Elements.statistic.donationTotal) {
+      return {
+        spend: 0,
+      };
+    }
+
+    await this.page.goto("https://kitabisa.com/dashboard/donations", { waitUntil: "networkidle2" });
 
     if (this.page.url().includes("login")) { throw Error(`Unauthorized`); }
 
@@ -295,7 +297,7 @@ export default class Core {
     // wait all element to be available and check
     await Promise.all([
       this.page.waitForSelector(Elements.donation.input),
-      this.page.waitForSelector(Elements.donation.wallet),
+      this.page.waitForSelector(Elements.donation.inputWallet),
       this.page.waitForSelector(Elements.donation.hideName),
       this.page.waitForSelector(Elements.donation.comment),
       this.page.waitForSelector(Elements.donation.submit),
@@ -303,19 +305,16 @@ export default class Core {
     // write donation amount
     await this.page.type(Elements.donation.input, options.amount.toString());
     // select "Dompet Kebaikan" as payment method
-    await this.page.evaluate((inputWallet) => {
-      document.querySelector(inputWallet).value = 21; // 21 = Dompet Kebaikan
-    }, Elements.donation.inputWallet);
+    await this.page.evaluate((inputWallet, wallet) => {
+      document.querySelector(inputWallet).click();
+      document.querySelector(wallet).click(); // Dompet Kebaikan
+    }, Elements.donation.inputWallet, Elements.donation.wallet);
     // set donation as anonymous
     if (options.isAnonymous) {
       await this.page.click(Elements.donation.hideName);
     }
     // set donation comment
     await this.page.type(Elements.donation.comment, options.comment);
-    // submit donation details
-    await this.click(Elements.donation.submit);
-    // wait navigator to be ready
-    await this.page.waitForNavigation({ waitUntil: "load" });
 
     if (options.test) {
       return {
@@ -324,14 +323,9 @@ export default class Core {
         ...options,
       };
     }
-    const pageTitle = await this.page.title();
-    if (!pageTitle.includes("Rangkuman Pembayaran")) {
-      return Promise.reject(Error("[KitaBisa] unable to verified campaign payment")); }
 
-    signale.info("[KitaBisa][3/5] Confirmed donation action and process payment");
-    // click on `confirm donation` and wait to redirect
-    await this.page.waitForSelector(Elements.confirm.button);
-    await this.click(Elements.confirm.button);
+    // submit donation details
+    await this.click(Elements.donation.submit);
     // wait navigator to be ready
     await this.page.waitForNavigation({ waitUntil: "networkidle0" });
 
