@@ -7,12 +7,14 @@ dotenv.config();
 const DONATION_URL_TEST = "https://kitabisa.com/campaign/temaninajwasembuh";
 const DONATION_AMOUNT_TEST = 1000;
 
-describe("KitaBisa - Authentication", () => {
+describe("KitaBisa - Authentication", function() {
   const kitaBisa = new KitaBisa();
   const kitaBisaAccount = {
     email: process.env.TEST_ACCOUNT_EMAIL || process.env.EMAIL,
     password: process.env.TEST_ACCOUNT_PASSWORD || process.env.PASSWD,
   };
+
+  this.timeout(30000);
 
   after(() => {
     kitaBisa.close();
