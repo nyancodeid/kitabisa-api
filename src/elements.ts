@@ -1,4 +1,5 @@
 export const donation = {
+  title: ".style__HeaderContent-kdutyw-1",
   input: "#contribute_inputfield_amount-donation",
   wallet: ".style__Form-sc-12bsx5v-1 > .style__PaymentContainer-sc-1wfxixd-0 > .style__Lists-sc-1wfxixd-2 > .style__VendorLists-sc-1wfxixd-5:nth-child(5)",
   inputWallet: "#contribute_button_pilih-metode-pembayaran",

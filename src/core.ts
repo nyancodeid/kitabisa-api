@@ -283,7 +283,7 @@ export default class Core {
 
     await this.page.goto(donationUrl, { waitUntil: "domcontentloaded" });
 
-    const title = await this.page.title().then((titleDOM) => titleDOM.replace("Kitabisa! - ", ""));
+    const title = await this.page.evaluate((titleDOM) => document.querySelector(titleDOM).textContent, Elements.donation.title);
 
     signale.info("[KitaBisa][1/5] campaign title is " + title);
     signale.info("[KitaBisa][2/5] prepare for make donation. donations detail field");
