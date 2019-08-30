@@ -43,7 +43,7 @@ describe("KitaBisa - Method", function() {
     password: process.env.TEST_ACCOUNT_PASSWORD || process.env.PASSWD,
   };
 
-  this.timeout(10000);
+  this.timeout(30000);
 
   after(() => {
     kitaBisa.close();
@@ -87,5 +87,13 @@ describe("KitaBisa - Method", function() {
 
     expect(donation).to.be.a("object");
     expect(donation.duration).to.be.a("number");
+  });
+  it("getCampaign() return should be object", async () => {
+    const campaigns = await kitaBisa.getCampaign([
+      KitaBisa.categories.BENCANA_ALAM,
+    ]);
+
+    expect(campaigns).to.be.a("array");
+    expect(campaigns.length).greaterThan(0);
   });
 });

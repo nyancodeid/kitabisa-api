@@ -189,7 +189,7 @@ export default class Core {
     }
 
     const sources = categories.map(
-      (category) => `https://www.kitabisa.com/ajax/explore/${Helpers.randomNumber(1, 30, 3)}-3.json?category=${category}&filter=organization`,
+      (category) => `https://core.ktbs.io/campaigns?category_id=${category}&`,
     );
 
     const campaignsPromise = sources.map(async (source: string) => {
@@ -198,34 +198,28 @@ export default class Core {
     });
 
     const campaigns = await Promise.all(campaignsPromise);
-    const formatedCampaigns = [];
 
-    for (const campaign of campaigns) {
-      for (const list of campaign.campaigns) {
+    const formater = campaigns.map((data) => {
+      return data.data.map((list: KitaBisaType.CampaignJSON) => {
         const status = { isOrganitaion: false, isVerified: false };
-        const dayLeft = (typeof list.deadline !== "number") ? 0 : list.deadline;
+        const dayLeft = (typeof list.days_remaining !== "number") ? 0 : list.days_remaining;
 
-        if (list["tag-icon"].includes("org") && !list["tag-icon"].includes("user")) {
-          status.isOrganitaion = true;
-        }
-        if (list["tag-icon"].includes("verified")) {
-          status.isVerified = true;
-        }
+        status.isOrganitaion = (list.campaigner_type === "ORGANIZATION") ? true : false;
 
-        formatedCampaigns.push({
+        return {
           title: list.title,
-          url: list.href,
+          url: `https://kitabisa.com/campaign/${list.short_url}`,
           tumbnailUrl: list.image,
           campaigner: list.campaigner,
           isOrganitaion: status.isOrganitaion,
-          isVerified: status.isVerified,
+          isVerified: list.campaigner_is_verified,
           dayLeft,
-          total: Helpers.getNumber(list.donation),
-        });
-      }
-    }
+          total: list.donation_received,
+        };
+      });
+    });
 
-    return formatedCampaigns;
+    return formater.reduce((acc, val) => acc.concat(val), []);
   }
   /**
    * @async
