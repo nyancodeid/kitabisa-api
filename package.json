@@ -1,6 +1,6 @@
 {
   "name": "kitabisa-api",
-  "version": "0.2.4",
+  "version": "0.3.0-beta.1",
   "description": "KitaBisa.com Automation API",
   "main": "dist/kitabisa.js",
   "prepublishOnly": "npm run build",
