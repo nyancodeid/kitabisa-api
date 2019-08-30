@@ -5,6 +5,7 @@ donations/*.json
 cookies/*.json
 libs/*.js
 dist/*
-tests/*
+tests/test.dirty.js
+!tests/*.test.ts
 backup.css
 .env
