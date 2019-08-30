@@ -3,8 +3,7 @@ Automation API for kitabisa.com website with Puppeteer. Read more on [documentat
 
 [![Repository](https://img.shields.io/badge/github-kitabisa--api-green?logo=github&style=flat)](https://github.com/nyancodeid/kitabisa-api)
 ![License MIT](https://img.shields.io/github/license/nyancodeid/kitabisa-api)
-[![Issues](https://img.shields.io/github/issues/nyancodeid/kitabisa-api)](https://github.com/nyancodeid/kitabisa-api/issues)
-[![Issues](https://travis-ci.org/nyancodeid/kitabisa-api.svg?branch=mobile-view)](https://github.com/nyancodeid/kitabisa-api/tree/mobile-view)
+[![Issues](https://travis-ci.org/nyancodeid/kitabisa-api.svg?branch=master)](https://github.com/nyancodeid/kitabisa-api)
 
 ### Example Usage
 For example we used `getBalance` for get latest balance and check is available for donations. and
