@@ -78,18 +78,6 @@ describe("KitaBisa - Method", function() {
     expect(donation.test).to.be.a("boolean");
     expect(donation.test).equal(true);
   });
-  it("makeDonation() return should be object", async () => {
-    const donation = await kitaBisa.makeDonation({
-      url: DONATION_URL_TEST,
-      amount: DONATION_AMOUNT_TEST,
-      isAnonymous: true,
-      evidence: false,
-      test: false,
-    });
-
-    expect(donation).to.be.a("object");
-    expect(donation.duration).to.be.a("number");
-  });
   it("getCampaign() return should be object", async () => {
     const campaigns = await kitaBisa.getCampaign([
       KitaBisa.categories.BENCANA_ALAM,
